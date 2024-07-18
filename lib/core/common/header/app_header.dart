@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hospital_management/core/common/input/app_input.dart';
 import 'package:hospital_management/gen/assets.gen.dart';
 
 import '../../constants/app_color.dart';
@@ -14,7 +16,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 17),
       width: double.infinity,
       height: 90,
-      color: AppColor.white,
+      color: AppColor.c_FFFFFF,
       child: Row(
         children: [
           Container(
@@ -24,7 +26,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.0),
               border: Border.all(
-                color: AppColor.lightBlue,
+                color: AppColor.c_D5E6FB,
                 width: 0.5,
               ),
             ),
@@ -32,6 +34,10 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 140.0),
           Text('NHÓM QUYỀN', style: AppStyle.headerTitle),
+          AppInput(
+            hintText: "Nhập tên/ Mã màn hình",
+            iconPath: Assets.icons.searchIcon,
+          )
         ],
       ),
     );
