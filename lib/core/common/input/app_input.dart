@@ -16,7 +16,7 @@ class AppInput extends StatelessWidget {
     required this.hintText,
     this.iconPath,
     this.maxWidth = 300,
-    this.maxHeight = 45,
+    this.maxHeight = 45.0,
     this.onFieldSubmitted,
   });
 
