@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hospital_management/core/common/button/app_button.dart';
+import 'package:hospital_management/core/common/check_box/app_checkbox.dart';
+import 'package:hospital_management/core/common/input/app_input.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
+import 'package:hospital_management/core/constants/app_style.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/right_section.dart';
 import 'package:hospital_management/gen/assets.gen.dart';
 
@@ -43,10 +47,100 @@ class RightPage extends StatelessWidget {
 
   Widget _buildRoleGroupInformationSection() {
     return RightSection(
+      padding: const EdgeInsets.all(8.0),
       sectionOnPressedSave: () {},
       title: '1. THÔNG TIN NHÓM QUYỀN',
-      child: Column(
-        children: [],
+      child: Column(children: [
+        _buildCodeRoleItem(isUsed: false),
+        const SizedBox(height: 8),
+        __buildRoleNameItem(),
+        const SizedBox(height: 8),
+        _buildExplainItem(controller: TextEditingController()),
+      ]),
+    );
+  }
+
+  Widget _buildCodeRoleItem(
+      {TextEditingController? controller, required bool isUsed}) {
+    return Row(
+      children: [
+        _labelInputSection(label: "Mã"),
+        const SizedBox(width: 17),
+        AppInput(
+          controller: controller,
+          enabled: false,
+          hintText: 'Mã nhóm quyền',
+          maxWidth: 206,
+        ),
+        const SizedBox(width: 20),
+        CustomCheckBox(
+          label: 'Sử dụng',
+          onChanged: (value) {},
+          value: isUsed,
+        ),
+      ],
+    );
+  }
+
+  Widget __buildRoleNameItem({TextEditingController? controller}) {
+    return Row(
+      children: [
+        _labelInputSection(label: "Tên"),
+        const SizedBox(width: 17),
+        Expanded(
+          child: AppInput(
+            hintText: 'Tên nhóm quyền',
+            controller: controller,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExplainItem({required TextEditingController controller}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _labelInputSection(label: "Diễn giải"),
+        const SizedBox(width: 17),
+        Expanded(
+          child: Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+            decoration: BoxDecoration(
+                border: Border.all(color: AppColor.c_E3E7EB),
+                borderRadius: BorderRadius.circular(6.0)),
+            child: EditableText(
+              selectionColor: AppColor.c_006EA9.withOpacity(0.4),
+              // selectionControls: ,
+              controller: controller,
+              focusNode: FocusNode(),
+              style: AppStyle.tableRow,
+              cursorColor: AppColor.c_2F80ED,
+              maxLines: 5,
+              backgroundCursorColor: AppColor.c_FFFFFF,
+              keyboardType: TextInputType.multiline,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _labelInputSection({required String label}) {
+    return Container(
+      alignment: Alignment.centerRight,
+      width: 100,
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: label, style: AppStyle.labelInputSection),
+            const TextSpan(
+                text: ' *',
+                style: TextStyle(
+                    color: AppColor.c_D84226, fontWeight: FontWeight.bold)),
+          ],
+        ),
       ),
     );
   }
@@ -55,7 +149,7 @@ class RightPage extends StatelessWidget {
     return RightSection(
       sectionOnPressedSave: () {},
       title: '2. NGƯỜI DÙNG',
-      child: Column(
+      child: const Column(
         children: [],
       ),
     );
@@ -65,7 +159,7 @@ class RightPage extends StatelessWidget {
     return RightSection(
       sectionOnPressedSave: () {},
       title: '3. PHÂN QUYỀN',
-      child: Column(
+      child: const Column(
         children: [],
       ),
     );

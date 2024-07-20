@@ -7,6 +7,7 @@ import 'package:hospital_management/core/constants/app_style.dart';
 import 'package:hospital_management/core/model/role_group_simple.dart';
 import 'package:hospital_management/features/dash_board/presentations/bloc/dashboard_bloc.dart';
 import 'package:hospital_management/gen/assets.gen.dart';
+import 'package:pagination_flutter/pagination.dart';
 
 class LeftPage extends StatelessWidget {
   const LeftPage({super.key});
@@ -113,30 +114,34 @@ class LeftPage extends StatelessWidget {
     );
   }
 
-  Table _buildTable(BuildContext context,
+  Widget _buildTable(BuildContext context,
       {required List<RoleGroupSimple> dataRows,
       required DashboardState state}) {
-    return Table(
-      border: const TableBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(6.0),
-        ),
-      ),
-      columnWidths: const {
-        0: FlexColumnWidth(1.5),
-        1: FlexColumnWidth(4.5),
-        2: FlexColumnWidth(5.5),
-        3: FlexColumnWidth(2.5),
-      },
+    return Column(
       children: [
-        _buildTableHeader(),
-        _buildTableFilter(state: state, context),
-        for (int i = 0; i < dataRows.length; i++)
-          _buildTableRow(
-            dataRows[i],
-            index: i,
-            state: state,
+        Table(
+          border: const TableBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(6.0),
+            ),
           ),
+          columnWidths: const {
+            0: FlexColumnWidth(1.5),
+            1: FlexColumnWidth(4.5),
+            2: FlexColumnWidth(5.5),
+            3: FlexColumnWidth(2.5),
+          },
+          children: [
+            _buildTableHeader(),
+            _buildTableFilter(state: state, context),
+            for (int i = 0; i < dataRows.length; i++)
+              _buildTableRow(
+                dataRows[i],
+                index: i,
+                state: state,
+              ),
+          ],
+        ),
       ],
     );
   }

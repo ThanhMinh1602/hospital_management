@@ -7,12 +7,14 @@ import 'package:hospital_management/gen/assets.gen.dart';
 class RightSection extends StatelessWidget {
   final String title;
   final Widget child;
+  final EdgeInsetsGeometry? padding;
   final void Function()? sectionOnPressedSave;
   const RightSection({
     super.key,
     required this.title,
     required this.child,
     this.sectionOnPressedSave,
+    this.padding,
   });
 
   @override
@@ -37,12 +39,12 @@ class RightSection extends StatelessWidget {
                 iconPath: Assets.icons.saveIcon,
                 boderColor: Colors.transparent,
                 backgroundColor: AppColor.c_006EA9,
-              )
+              ),
             ],
           ),
         ),
         Container(
-          height: 200.0,
+          padding: padding,
           width: double.infinity,
           decoration: const BoxDecoration(
             color: AppColor.c_FFFFFF,
@@ -52,6 +54,5 @@ class RightSection extends StatelessWidget {
         )
       ],
     );
-    ;
   }
 }

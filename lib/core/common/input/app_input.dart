@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
 import 'package:hospital_management/core/constants/app_style.dart';
@@ -9,6 +8,9 @@ class AppInput extends StatelessWidget {
   final String? iconPath;
   final double? maxWidth;
   final double? maxHeight;
+  final bool? enabled;
+  final Color? backgroundColor;
+  final TextEditingController? controller;
   final void Function(String)? onFieldSubmitted;
 
   const AppInput({
@@ -18,11 +20,16 @@ class AppInput extends StatelessWidget {
     this.maxWidth = 300,
     this.maxHeight = 45.0,
     this.onFieldSubmitted,
+    this.enabled,
+    this.backgroundColor,
+    this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
+      enabled: enabled,
       onFieldSubmitted: onFieldSubmitted,
       cursorColor: AppColor.c_2F80ED,
       cursorHeight: 18,
@@ -42,7 +49,7 @@ class AppInput extends StatelessWidget {
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12.5, horizontal: 16.0),
         filled: true,
-        fillColor: AppColor.c_F5F7FA,
+        fillColor: backgroundColor ?? AppColor.c_F5F7FA,
         constraints: BoxConstraints(maxWidth: maxWidth!, maxHeight: maxHeight!),
         border: OutlineInputBorder(
           borderSide: const BorderSide(

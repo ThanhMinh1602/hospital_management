@@ -49,4 +49,9 @@ class AppStyle {
     fontSize: 20.0,
     color: AppColor.c_47535D,
   );
+  static TextStyle labelInputSection = GoogleFonts.nunito(
+    fontWeight: FontWeight.bold,
+    fontSize: 20.0,
+    color: AppColor.c_323F4B,
+  );
 }
