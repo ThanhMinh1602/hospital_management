@@ -44,4 +44,9 @@ class AppStyle {
     fontSize: 18.0,
     color: AppColor.c_47535D,
   );
+  static TextStyle sectionRightHeader = GoogleFonts.nunito(
+    fontWeight: FontWeight.w700,
+    fontSize: 20.0,
+    color: AppColor.c_47535D,
+  );
 }

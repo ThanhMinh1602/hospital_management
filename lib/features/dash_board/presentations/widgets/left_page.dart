@@ -16,6 +16,8 @@ class LeftPage extends StatelessWidget {
     return Flexible(
       flex: 2,
       child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: AppColor.c_F8FAFC,
           borderRadius: BorderRadius.circular(8.0),
