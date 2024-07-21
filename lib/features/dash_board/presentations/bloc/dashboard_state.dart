@@ -11,6 +11,7 @@ class DashboardState with _$DashboardState {
     @Default([]) List<bool> isExpandedList, // Trạng thái mở rộng của hàng chính
     @Default([])
     List<List<bool>> subLevelExpandedList, // Trạng thái mở rộng của hàng con
+    @Default([]) List<List<List<bool>>> actionsVisibleList,
     RoleGroupSimple? roleGroupSimple,
   }) = _DashboardState;
 }

@@ -26,4 +26,34 @@ class ScreenInfo {
       'ScreenSub': screenSub.toJson(),
     };
   }
+
+  // static List<ScreenInfo> generateFakeData() {
+  //   return [
+  //     ScreenInfo(
+  //       screenCode: 'E01L00001',
+  //       screenName: 'Hồ sơ điều trị',
+  //       screenSub: ScreenSub.generateFakeData()[0],
+  //     ),
+  //     ScreenInfo(
+  //       screenCode: 'E01L00002',
+  //       screenName: 'Hồ sơ bệnh nhân',
+  //       screenSub: ScreenSub.generateFakeData()[1],
+  //     ),
+  //     ScreenInfo(
+  //       screenCode: 'E01L00003',
+  //       screenName: 'Hồ sơ y tá',
+  //       screenSub: ScreenSub.generateFakeData()[2],
+  //     ),
+  //     ScreenInfo(
+  //       screenCode: 'E01L00004',
+  //       screenName: 'Hồ sơ phẫu thuật',
+  //       screenSub: ScreenSub.generateFakeData()[3],
+  //     ),
+  //     ScreenInfo(
+  //       screenCode: 'E01L00005',
+  //       screenName: 'Hồ sơ bác sĩ',
+  //       screenSub: ScreenSub.generateFakeData()[4],
+  //     ),
+  //   ];
+  // }
 }

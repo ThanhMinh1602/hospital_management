@@ -1,7 +1,7 @@
 class ScreenSub {
-  String screenCode;
-  String screenName;
-  List<int> role;
+  final String screenCode;
+  final String screenName;
+  final String role;
 
   ScreenSub({
     required this.screenCode,
@@ -13,7 +13,7 @@ class ScreenSub {
     return ScreenSub(
       screenCode: json['ScreenCode'],
       screenName: json['ScreenName'],
-      role: List<int>.from(json['Role'].map((x) => x)),
+      role: json['Role'],
     );
   }
 
@@ -21,7 +21,7 @@ class ScreenSub {
     return {
       'ScreenCode': screenCode,
       'ScreenName': screenName,
-      'Role': List<dynamic>.from(role.map((x) => x)),
+      'Role': role,
     };
   }
 }

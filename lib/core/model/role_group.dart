@@ -1,9 +1,9 @@
 class RoleGroup {
-  int id;
-  String roleCode;
-  String roleName;
-  String description;
-  int status;
+  final int id;
+  final String roleCode;
+  final String roleName;
+  final String description;
+  final int status;
 
   RoleGroup({
     required this.id,

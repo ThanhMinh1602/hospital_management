@@ -17,6 +17,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on(onToggleExpand);
     on(onToggleSubExpand);
     on(onDetaiRole);
+    on(_onToggleActions);
     add(const DashboardEvent.init());
   }
 
@@ -66,7 +67,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     final roleGroupSimple = event.roleGroupSimple;
     emitter(state.copyWith(roleGroupSimple: roleGroupSimple));
   }
-  
+
   void onToggleExpand(
       ToggleExpandEvent event, Emitter<DashboardState> emitter) {
     final index = event.index;
@@ -85,5 +86,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     newSubLevelExpandedList[index][subIndex] =
         !newSubLevelExpandedList[index][subIndex];
     emitter(state.copyWith(subLevelExpandedList: newSubLevelExpandedList));
+  }
+
+  void _onToggleActions(
+      ToggleActionsEvent event, Emitter<DashboardState> emitter) {
+    final newActionsVisibleList =
+        List<List<List<bool>>>.from(state.actionsVisibleList);
+    newActionsVisibleList[event.index][event.subIndex][event.subSubIndex] =
+        !newActionsVisibleList[event.index][event.subIndex][event.subSubIndex];
+    emitter(state.copyWith(actionsVisibleList: newActionsVisibleList));
   }
 }

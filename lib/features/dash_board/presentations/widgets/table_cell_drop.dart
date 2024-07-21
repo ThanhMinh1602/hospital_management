@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management/core/constants/app_color.dart';
 import 'package:hospital_management/core/constants/app_style.dart';
 
 class TableCellDrop extends StatelessWidget {
@@ -6,12 +7,16 @@ class TableCellDrop extends StatelessWidget {
   final Color bgrColor;
   final Widget? child;
   final String? title;
+  final EdgeInsetsGeometry? padding;
+  final bool? isHeader;
   const TableCellDrop(
       {super.key,
       required this.flex,
       required this.bgrColor,
       this.child,
-      this.title});
+      this.title,
+      this.padding,
+      this.isHeader});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +24,20 @@ class TableCellDrop extends StatelessWidget {
       flex: flex,
       child: Container(
         height: 50.0,
-        alignment: Alignment.center,
+        padding: padding,
+        alignment: (child != null || isHeader == true)
+            ? Alignment.center
+            : Alignment.centerLeft,
         margin: const EdgeInsets.symmetric(horizontal: 1.0),
         decoration: BoxDecoration(
           color: bgrColor,
+          border: Border.all(color: AppColor.c_B8E5FA, width: 0.5),
         ),
-        child: child ?? Text(title ?? '', style: AppStyle.tableHeader),
+        child: child ??
+            Text(title ?? '',
+                style: isHeader == true
+                    ? AppStyle.tableHeader
+                    : AppStyle.tableRow),
       ),
     );
   }

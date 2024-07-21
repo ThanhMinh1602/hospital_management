@@ -1,7 +1,7 @@
 class DeptGroupRole {
-  int id;
-  String deptCode;
-  String deptName;
+  final int id;
+  final String deptCode;
+  final String deptName;
 
   DeptGroupRole({
     required this.id,

@@ -12,9 +12,12 @@ class DashboardEvent with _$DashboardEvent {
       ChangeTabelUserEvent;
   const factory DashboardEvent.onTapDetailRole(
       RoleGroupSimple roleGroupSimple) = TapDetailRoleEvent;
-
+  const factory DashboardEvent.toggleActions(
+      int index, int subIndex, int subSubIndex) = ToggleActionsEvent;
   // Thêm sự kiện cho việc mở rộng hàng
   const factory DashboardEvent.toggleExpand(int index) = ToggleExpandEvent;
   const factory DashboardEvent.toggleSubExpand(int index, int subIndex) =
       ToggleSubExpandEvent;
+  const factory DashboardEvent.toggleSubSubExpand(
+      int index, int subIndex, int subSubIndex) = ToggleSubSubExpandEvent;
 }
