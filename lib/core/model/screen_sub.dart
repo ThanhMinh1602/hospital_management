@@ -1,27 +1,48 @@
 class ScreenSub {
-  final String screenCode;
-  final String screenName;
-  final String role;
+  final int id;
+  final String subCode;
+  final String subName;
 
   ScreenSub({
-    required this.screenCode,
-    required this.screenName,
-    required this.role,
+    required this.id,
+    required this.subCode,
+    required this.subName,
   });
 
   factory ScreenSub.fromJson(Map<String, dynamic> json) {
     return ScreenSub(
-      screenCode: json['ScreenCode'],
-      screenName: json['ScreenName'],
-      role: json['Role'],
+      id: json['id'],
+      subCode: json['SubCode'],
+      subName: json['SubName'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'ScreenCode': screenCode,
-      'ScreenName': screenName,
-      'Role': role,
+      'id': id,
+      'SubCode': subCode,
+      'SubName': subName,
     };
+  }
+
+  // Dữ liệu giả cho ScreenSub
+  static List<ScreenSub> generateFakeData() {
+    return [
+      ScreenSub(
+        id: 1,
+        subCode: 'SUB001',
+        subName: 'Overview',
+      ),
+      ScreenSub(
+        id: 2,
+        subCode: 'SUB002',
+        subName: 'User List',
+      ),
+      ScreenSub(
+        id: 3,
+        subCode: 'SUB003',
+        subName: 'Preferences',
+      ),
+    ];
   }
 }

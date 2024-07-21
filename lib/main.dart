@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management/features/assign_role/presentations/page/assign_role_page.dart';
 import 'package:hospital_management/features/dash_board/presentations/page/dashboard_page.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DashBoardPage(),
+      home: AssignRolePage(),
     );
   }
 }

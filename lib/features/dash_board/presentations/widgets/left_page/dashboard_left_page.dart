@@ -8,8 +8,8 @@ import 'package:hospital_management/core/model/role_group_simple.dart';
 import 'package:hospital_management/features/dash_board/presentations/bloc/dashboard_bloc.dart';
 import 'package:hospital_management/gen/assets.gen.dart';
 
-class LeftPage extends StatelessWidget {
-  const LeftPage({super.key});
+class DashBoardLeftPage extends StatelessWidget {
+  const DashBoardLeftPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class LeftPage extends StatelessWidget {
       flex: 2,
       child: Container(
         height: MediaQuery.of(context).size.height,
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: AppColor.c_F8FAFC,
           borderRadius: BorderRadius.circular(8.0),
@@ -25,25 +25,28 @@ class LeftPage extends StatelessWidget {
         child: BlocConsumer<DashboardBloc, DashboardState>(
           listener: (context, state) {},
           builder: (context, state) {
-            return Column(
-              children: [
-                _buildLeftHeader(
-                  onTapBack: () {},
-                  onTapXLS: () {},
-                  onTapRemove: () {},
-                ),
-                CustomCheckBox(
-                  label: 'Chọn',
-                  onChanged: (value) {
-                    context
-                        .read<DashboardBloc>()
-                        .add(const DashboardEvent.selectGroupRole());
-                  },
-                  value: state.isSelectGroupRole,
-                ),
-                _buildTable(context,
-                    dataRows: state.roleGroupSimples, state: state),
-              ],
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 10.0),
+                  _buildLeftHeader(
+                    onTapBack: () {},
+                    onTapXLS: () {},
+                    onTapRemove: () {},
+                  ),
+                  CustomCheckBox(
+                    label: 'Chọn',
+                    onChanged: (value) {
+                      context
+                          .read<DashboardBloc>()
+                          .add(const DashboardEvent.selectGroupRole());
+                    },
+                    value: state.isSelectGroupRole,
+                  ),
+                  _buildTable(context,
+                      dataRows: state.roleGroupSimples, state: state),
+                ],
+              ),
             );
           },
         ),

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
 import 'package:hospital_management/core/constants/app_style.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/right_page/right_section.dart';
-import 'package:hospital_management/features/dash_board/presentations/widgets/table_cell_drop.dart';
+import 'package:hospital_management/core/common/components/table_cell_drop.dart';
 import 'package:hospital_management/features/dash_board/presentations/bloc/dashboard_bloc.dart';
 
 class DecentralizationSection extends StatelessWidget {

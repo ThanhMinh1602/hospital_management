@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hospital_management/core/common/button/app_button.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
-import 'package:hospital_management/features/dash_board/presentations/bloc/dashboard_bloc.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/right_page/decentralization_section.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/right_page/role_group_information_section.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/right_page/user_section.dart';
@@ -20,7 +18,6 @@ class RightPage extends StatelessWidget {
       flex: 5,
       child: Container(
           height: MediaQuery.of(context).size.height,
-          width: double.infinity,
           padding:
               const EdgeInsets.symmetric(horizontal: 10.0).copyWith(top: 14.5),
           decoration: const BoxDecoration(
