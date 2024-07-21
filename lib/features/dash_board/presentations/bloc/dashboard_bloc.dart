@@ -13,15 +13,22 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on(onInit);
     on(onSelectGroupRole);
     on(onFilterStatus);
+    on(onChangeTableUser);
+    on(onToggleExpand);
+    on(onToggleSubExpand);
+    on(onDetaiRole);
     add(const DashboardEvent.init());
   }
-}
 
-extension HandlerDashboardBloc on DashboardBloc {
   Future<void> onInit(
       DashboardInitEvent event, Emitter<DashboardState> emitter) async {
     final roleGroupSimples = await RoleGroupSimple.roleGroupSimpleDatas;
-    emitter(state.copyWith(roleGroupSimples: roleGroupSimples));
+    emitter(state.copyWith(
+      roleGroupSimples: roleGroupSimples,
+      isExpandedList: List.generate(roleGroupSimples.length, (_) => false),
+      subLevelExpandedList:
+          List.generate(roleGroupSimples.length, (_) => [false]),
+    ));
   }
 
   void onSelectGroupRole(
@@ -48,4 +55,35 @@ extension HandlerDashboardBloc on DashboardBloc {
 
   void onDeleteGroupRole(
       deleteGroupStatusEvent event, Emitter<DashboardState> emitter) {}
+
+  void onChangeTableUser(
+      ChangeTabelUserEvent event, Emitter<DashboardState> emitter) {
+    final curentTableUser = event.curentTableUser;
+    emitter(state.copyWith(curentTableUser: curentTableUser));
+  }
+
+  void onDetaiRole(TapDetailRoleEvent event, Emitter<DashboardState> emitter) {
+    final roleGroupSimple = event.roleGroupSimple;
+    emitter(state.copyWith(roleGroupSimple: roleGroupSimple));
+  }
+  
+  void onToggleExpand(
+      ToggleExpandEvent event, Emitter<DashboardState> emitter) {
+    final index = event.index;
+    List<bool> newIsExpandedList = List.from(state.isExpandedList);
+    newIsExpandedList[index] = !newIsExpandedList[index];
+    emitter(state.copyWith(isExpandedList: newIsExpandedList));
+  }
+
+  void onToggleSubExpand(
+      ToggleSubExpandEvent event, Emitter<DashboardState> emitter) {
+    final index = event.index;
+    final subIndex = event.subIndex;
+    final newSubLevelExpandedList =
+        List<List<bool>>.from(state.subLevelExpandedList);
+    newSubLevelExpandedList[index] = List.from(newSubLevelExpandedList[index]);
+    newSubLevelExpandedList[index][subIndex] =
+        !newSubLevelExpandedList[index][subIndex];
+    emitter(state.copyWith(subLevelExpandedList: newSubLevelExpandedList));
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_management/core/common/header/app_header.dart';
-import 'package:hospital_management/features/dash_board/presentations/widgets/left_page.dart';
-import 'package:hospital_management/features/dash_board/presentations/widgets/right_page.dart';
+import 'package:hospital_management/features/dash_board/presentations/widgets/left_page/left_page.dart';
+import 'package:hospital_management/features/dash_board/presentations/widgets/right_page/right_page.dart';
 
 class DashboardWidget extends StatelessWidget {
   const DashboardWidget({super.key});

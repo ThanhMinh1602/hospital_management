@@ -54,4 +54,9 @@ class AppStyle {
     fontSize: 20.0,
     color: AppColor.c_323F4B,
   );
+  static TextStyle tabTitle = GoogleFonts.nunito(
+    fontWeight: FontWeight.w400,
+    fontSize: 20.0,
+    color: AppColor.c_000000.withOpacity(0.8),
+  );
 }

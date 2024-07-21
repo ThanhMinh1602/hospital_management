@@ -8,4 +8,13 @@ class DashboardEvent with _$DashboardEvent {
       FilterGroupStatusEvent;
   const factory DashboardEvent.deleteGroupStatus(int status) =
       deleteGroupStatusEvent;
+  const factory DashboardEvent.changeTableUser(int curentTableUser) =
+      ChangeTabelUserEvent;
+  const factory DashboardEvent.onTapDetailRole(
+      RoleGroupSimple roleGroupSimple) = TapDetailRoleEvent;
+
+  // Thêm sự kiện cho việc mở rộng hàng
+  const factory DashboardEvent.toggleExpand(int index) = ToggleExpandEvent;
+  const factory DashboardEvent.toggleSubExpand(int index, int subIndex) =
+      ToggleSubExpandEvent;
 }
