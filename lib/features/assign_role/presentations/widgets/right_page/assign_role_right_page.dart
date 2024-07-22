@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_management/core/common/button/app_button.dart';
+import 'package:hospital_management/core/common/components/table_cell_drop.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
+import 'package:hospital_management/core/constants/app_style.dart';
+import 'package:hospital_management/features/assign_role/presentations/bloc/assign_roles_bloc.dart';
 import 'package:hospital_management/gen/assets.gen.dart';
 
 class AssignRoleRightPage extends StatelessWidget {
@@ -31,6 +35,8 @@ class AssignRoleRightPage extends StatelessWidget {
                   nextOnPressed: () {},
                   saveOnPressed: () {},
                 ),
+                _buildTableHeader(),
+                _buildTableBody()
               ],
             ),
           )),
@@ -74,6 +80,164 @@ class AssignRoleRightPage extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildTableHeader() {
+    return const Row(
+      children: [
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_D8F1FD,
+          flex: 2,
+          title: 'Mã nhóm quyền',
+        ),
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_D8F1FD,
+          flex: 4,
+          title: 'Tên nhóm quyền',
+        ),
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_D8F1FD,
+          flex: 4,
+          title: 'Quyền',
+        ),
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_D8F1FD,
+          flex: 1,
+          title: '',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTableBody() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        const isExpanded = true;
+        // final screen = state.screens[index];
+        // final subExpandedList = state.subLevelExpandedList[index];
+        return Column(
+          children: [
+            GestureDetector(
+              onTap: () {},
+              child: _buildRow(
+                context: context,
+                backgroundColor: AppColor.c_F0FAFE,
+                code: 'Admin',
+                name: 'Quản trị hệ thống',
+                role: 'Toàn quyền',
+                padding: 10.0,
+                isExpanded: isExpanded,
+                hasArrow: true,
+              ),
+            ),
+            if (isExpanded) ...[
+              _buildActionRow('Xem', padding: 30.0),
+              _buildActionRow('Thêm', padding: 30.0),
+              _buildActionRow('Xoá', padding: 30.0),
+            ]
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildRow({
+    required BuildContext context,
+    required Color backgroundColor,
+    required String code,
+    required String name,
+    required String role,
+    required double padding,
+    required bool isExpanded,
+    required bool hasArrow,
+  }) {
+    return Row(
+      children: [
+        TableCellDrop(
+          bgrColor: backgroundColor,
+          flex: 2,
+          title: code,
+          padding: EdgeInsets.symmetric(horizontal: padding),
+        ),
+        TableCellDrop(
+          bgrColor: backgroundColor,
+          flex: 4,
+          title: name,
+          padding: EdgeInsets.symmetric(horizontal: padding),
+        ),
+        TableCellDrop(
+          bgrColor: backgroundColor,
+          flex: 4,
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Row(
+            children: [
+              if (hasArrow)
+                Icon(
+                  isExpanded
+                      ? Icons.keyboard_arrow_down
+                      : Icons.keyboard_arrow_right,
+                  size: 16,
+                ),
+              SizedBox(width: padding / 2),
+              Text(
+                role,
+                style: AppStyle.tableRow,
+              ),
+            ],
+          ),
+        ),
+        TableCellDrop(
+          bgrColor: backgroundColor,
+          flex: 1,
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Checkbox(
+            value: true,
+            onChanged: (value) {},
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionRow(String actionTitle, {required double padding}) {
+    return Row(
+      children: [
+        TableCellDrop(
+          bgrColor: AppColor.c_FFFFFF,
+          flex: 2,
+          title: '',
+          padding: EdgeInsets.symmetric(horizontal: padding),
+        ),
+        TableCellDrop(
+          bgrColor: AppColor.c_FFFFFF,
+          flex: 4,
+          title: '',
+          padding: EdgeInsets.symmetric(horizontal: padding),
+        ),
+        TableCellDrop(
+          bgrColor: AppColor.c_FFFFFF,
+          flex: 4,
+          title: actionTitle,
+          padding: EdgeInsets.symmetric(horizontal: padding),
+        ),
+        TableCellDrop(
+          bgrColor: AppColor.c_FFFFFF,
+          flex: 1,
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Checkbox(
+            value: true,
+            onChanged: (value) {},
+          ),
+        ),
+      ],
     );
   }
 }

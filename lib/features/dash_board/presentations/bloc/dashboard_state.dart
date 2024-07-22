@@ -4,14 +4,20 @@ part of 'dashboard_bloc.dart';
 class DashboardState with _$DashboardState {
   const factory DashboardState({
     @Default(false) bool isLoading,
-    @Default(false) bool isSelectGroupRole,
+    @Default(false) bool isAllowsMultiSelectGroupRole,
+    @Default(false) bool isAllowsMultiSelectDecentralizationRole,
+    AccountGroup? accountGroup,
+    DeptGroupRole? deptGroupRole,
+    @Default([]) List<AccountGroup> accountGroups,
+    @Default([]) List<DeptGroupRole> deptGroupRoles,
     @Default(2) int groupStatus,
     @Default(0) int curentTableUser,
-    @Default([]) List<RoleGroupSimple> roleGroupSimples,
-    @Default([]) List<bool> isExpandedList, // Trạng thái mở rộng của hàng chính
-    @Default([])
-    List<List<bool>> subLevelExpandedList, // Trạng thái mở rộng của hàng con
+    @Default([]) List<RoleGroup> roleGroups,
+    @Default([]) List<bool> isExpandedList,
+    @Default([]) List<List<bool>> subLevelExpandedList,
     @Default([]) List<List<List<bool>>> actionsVisibleList,
-    RoleGroupSimple? roleGroupSimple,
+    RoleGroup? roleGroup,
+    @Default([]) List<int> selectedRoleGroupIds,
+    @Default([]) List<int> selectedDecentralizationRoleIds,
   }) = _DashboardState;
 }

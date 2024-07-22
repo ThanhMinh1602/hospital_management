@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hospital_management/core/model/screen.dart';
 
 part 'assign_roles_event.dart';
 part 'assign_roles_state.dart';
@@ -15,9 +14,9 @@ class AssignRolesBloc extends Bloc<AssignRolesEvent, AssignRolesState> {
   }
   Future<void> onInit(
       AssignRolesInitialEvent event, Emitter<AssignRolesState> emitter) async {
-    final screens = Screen.generateFakeData();
+    final screens = [];
     emitter(state.copyWith(
-      screens: screens,
+      // screens: screens,
       isExpandedList: List.generate(screens.length, (_) => false),
       subLevelExpandedList: List.generate(screens.length, (_) => [false]),
     ));

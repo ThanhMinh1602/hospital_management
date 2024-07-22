@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hospital_management/core/common/check_box/app_checkbox.dart';
+import 'package:hospital_management/core/common/components/app_pagination.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
 import 'package:hospital_management/core/constants/app_style.dart';
-import 'package:hospital_management/core/model/role_group_simple.dart';
+import 'package:hospital_management/core/model/role_group/role_group.dart';
 import 'package:hospital_management/features/dash_board/presentations/bloc/dashboard_bloc.dart';
 import 'package:hospital_management/gen/assets.gen.dart';
 
-class DashBoardLeftPage extends StatelessWidget {
+class DashBoardLeftPage extends StatefulWidget {
   const DashBoardLeftPage({super.key});
 
+  @override
+  State<DashBoardLeftPage> createState() => _DashBoardLeftPageState();
+}
+
+class _DashBoardLeftPageState extends State<DashBoardLeftPage> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
@@ -41,10 +47,17 @@ class DashBoardLeftPage extends StatelessWidget {
                           .read<DashboardBloc>()
                           .add(const DashboardEvent.selectGroupRole());
                     },
-                    value: state.isSelectGroupRole,
+                    value: state.isAllowsMultiSelectGroupRole,
                   ),
                   _buildTable(context,
-                      dataRows: state.roleGroupSimples, state: state),
+                      dataRows: state.roleGroups, state: state),
+                  AppPagination(
+                    onPageChanged: (value) {},
+                    selectedPage: 1,
+                    listPageCount: const [10, 20, 30, 40, 50],
+                    pageCountValue: 10,
+                    onChangedPagecount: (pageCount) {},
+                  ),
                 ],
               ),
             );
@@ -117,8 +130,7 @@ class DashBoardLeftPage extends StatelessWidget {
   }
 
   Widget _buildTable(BuildContext context,
-      {required List<RoleGroupSimple> dataRows,
-      required DashboardState state}) {
+      {required List<RoleGroup> dataRows, required DashboardState state}) {
     return Column(
       children: [
         Table(
@@ -219,25 +231,33 @@ class DashBoardLeftPage extends StatelessWidget {
     );
   }
 
-  TableRow _buildTableRow(RoleGroupSimple roleGroupSimple,
+  TableRow _buildTableRow(RoleGroup roleGroupSimple,
       {required int index,
       required DashboardState state,
       void Function()? onTapRow}) {
+    final isSelected = state.selectedRoleGroupIds.contains(roleGroupSimple.id);
+
     return TableRow(
       decoration: BoxDecoration(
         color: index % 2 == 0 ? AppColor.c_C8E7CA : AppColor.c_FFFFFF,
       ),
       children: [
-        state.isSelectGroupRole
+        state.isAllowsMultiSelectGroupRole
             ? Checkbox(
-                value: false,
-                onChanged: (value) {},
+                value: isSelected,
+                onChanged: (value) {
+                  if (value != null) {
+                    context
+                        .read<DashboardBloc>()
+                        .add(DashboardEvent.toggleCheckbox(roleGroupSimple.id));
+                  }
+                },
               )
             : _buildTableCell(text: roleGroupSimple.id.toString()),
-        _buildTableCell(text: roleGroupSimple.roleGroupCode, onTap: onTapRow),
-        _buildTableCell(text: roleGroupSimple.roleGroupName, onTap: onTapRow),
+        _buildTableCell(text: roleGroupSimple.roleCode, onTap: onTapRow),
+        _buildTableCell(text: roleGroupSimple.roleName, onTap: onTapRow),
         Checkbox(
-          value: roleGroupSimple.status == 1,
+          value: roleGroupSimple.isUse == 1,
           onChanged: null,
         ),
       ],

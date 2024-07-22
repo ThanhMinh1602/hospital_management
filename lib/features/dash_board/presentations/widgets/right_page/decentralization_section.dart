@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
 import 'package:hospital_management/core/constants/app_style.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/right_page/right_section.dart';
 import 'package:hospital_management/core/common/components/table_cell_drop.dart';
 import 'package:hospital_management/features/dash_board/presentations/bloc/dashboard_bloc.dart';
+import 'package:hospital_management/gen/assets.gen.dart';
 
 class DecentralizationSection extends StatelessWidget {
   const DecentralizationSection({super.key});
@@ -19,8 +21,9 @@ class DecentralizationSection extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _buildHeader(),
+                _buildHeader(context, state),
                 _buildBodyTable(context, state),
+                _buildTableSearch()
               ],
             ),
           ),
@@ -29,15 +32,19 @@ class DecentralizationSection extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context, DashboardState state) {
     return Row(
       children: [
         TableCellDrop(
           bgrColor: AppColor.c_D8F1FD,
           flex: 1,
           child: Checkbox(
-            value: true,
-            onChanged: (value) {},
+            value: state.isAllowsMultiSelectDecentralizationRole,
+            onChanged: (value) {
+              context
+                  .read<DashboardBloc>()
+                  .add(const DashboardEvent.allowsMultiSelectDectRole());
+            },
           ),
         ),
         const TableCellDrop(
@@ -56,11 +63,40 @@ class DecentralizationSection extends StatelessWidget {
     );
   }
 
+  Widget _buildTableSearch() {
+    return Row(
+      children: [
+        const TableCellDrop(
+          bgrColor: AppColor.c_FFFFFF,
+          flex: 1,
+          title: '',
+        ),
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_FFFFFF,
+          flex: 3,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: SvgPicture.asset(Assets.icons.searchIcon),
+          ),
+        ),
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_FFFFFF,
+          flex: 10,
+          child: Align(
+              alignment: Alignment.centerRight,
+              child: SvgPicture.asset(Assets.icons.searchIcon)),
+        ),
+      ],
+    );
+  }
+
   Widget _buildBodyTable(BuildContext context, DashboardState state) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: state.roleGroupSimples.length,
+      itemCount: state.roleGroup?.screens.length ?? 0,
       itemBuilder: (context, index) {
         return Column(
           children: [
@@ -70,10 +106,10 @@ class DecentralizationSection extends StatelessWidget {
               child: _buildRow(
                 context: context,
                 backgroundColor: AppColor.c_F0FAFE,
-                checkboxValue: true,
+                checkboxValue: state.isAllowsMultiSelectDecentralizationRole,
                 checkboxOnChanged: (value) {},
-                code: 'E01',
-                name: 'Nội trú',
+                code: state.roleGroup!.screens[index].screenCode,
+                name: state.roleGroup!.screens[index].screenName,
                 padding: 10.0,
                 isExpanded: state.isExpandedList[index],
               ),
@@ -90,10 +126,13 @@ class DecentralizationSection extends StatelessWidget {
                         child: _buildRow(
                           context: context,
                           backgroundColor: AppColor.c_FFFFFF,
-                          checkboxValue: true,
+                          checkboxValue:
+                              state.isAllowsMultiSelectDecentralizationRole,
                           checkboxOnChanged: (value) {},
-                          code: 'E01L00001',
-                          name: 'Hồ sơ điều trị',
+                          code: state
+                              .roleGroup!.screens[index].screenSub!.screenCode,
+                          name: state
+                              .roleGroup!.screens[index].screenSub!.screenName,
                           padding: 20.0,
                           isExpanded: state.subLevelExpandedList[index]
                               [subIndex],
@@ -107,18 +146,32 @@ class DecentralizationSection extends StatelessWidget {
                               child: _buildRow(
                                 context: context,
                                 backgroundColor: AppColor.c_FFFFFF,
-                                checkboxValue: true,
+                                checkboxValue: state
+                                    .isAllowsMultiSelectDecentralizationRole,
                                 checkboxOnChanged: (value) {},
-                                code: 'E01L00001.1',
-                                name: 'Hồ sơ bác sĩ',
+                                code: state.roleGroup!.screens[index].screenSub!
+                                    .screenSubSub!.screenCode,
+                                name: state.roleGroup!.screens[index].screenSub!
+                                    .screenSubSub!.screenName,
                                 padding: 30.0,
                                 isExpanded:
                                     false, // Always false for the deepest level
                               ),
                             ),
-                            _buildActionRow('Xem', padding: 30.0),
-                            _buildActionRow('Thêm', padding: 30.0),
-                            _buildActionRow('Xoá', padding: 30.0),
+                            for (int i = 0;
+                                i <
+                                    state.roleGroup!.screens[index].screenSub!
+                                        .screenSubSub!.role.length;
+                                i++)
+                              _buildActionRow(
+                                _getActionRowName(state
+                                    .roleGroup!
+                                    .screens[index]
+                                    .screenSub!
+                                    .screenSubSub!
+                                    .role[i]),
+                                padding: 30.0,
+                              ),
                           ],
                         ),
                     ],
@@ -129,6 +182,19 @@ class DecentralizationSection extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _getActionRowName(int roleValue) {
+    switch (roleValue) {
+      case 1:
+        return 'Xem';
+      case 2:
+        return 'Thêm';
+      case 3:
+        return 'Xoá';
+      default:
+        return '';
+    }
   }
 
   Widget _buildRow({

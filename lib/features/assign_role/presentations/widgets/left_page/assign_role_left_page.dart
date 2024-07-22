@@ -41,8 +41,8 @@ class AssignRoleLeftPage extends StatelessWidget {
                     },
                     value: true,
                   ),
-                  _buildHeader(),
-                  _buildBodyTable(context, state),
+                  _buildTableHeader(),
+                  _buildTableBody(context, state),
                 ],
               ),
             ),
@@ -73,25 +73,6 @@ class AssignRoleLeftPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return const Row(
-      children: [
-        TableCellDrop(
-          isHeader: true,
-          bgrColor: AppColor.c_D8F1FD,
-          flex: 2,
-          title: 'Mã',
-        ),
-        TableCellDrop(
-          isHeader: true,
-          bgrColor: AppColor.c_D8F1FD,
-          flex: 3,
-          title: 'Tên',
-        ),
-      ],
-    );
-  }
-
   Widget _buildXlsIcon({required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
@@ -112,14 +93,33 @@ class AssignRoleLeftPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBodyTable(BuildContext context, AssignRolesState state) {
+  Widget _buildTableHeader() {
+    return const Row(
+      children: [
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_D8F1FD,
+          flex: 2,
+          title: 'Mã',
+        ),
+        TableCellDrop(
+          isHeader: true,
+          bgrColor: AppColor.c_D8F1FD,
+          flex: 3,
+          title: 'Tên',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTableBody(BuildContext context, AssignRolesState state) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: state.screens.length,
+      itemCount: 10,
       itemBuilder: (context, index) {
         final isExpanded = state.isExpandedList[index];
-        final screen = state.screens[index];
+        final screen = [];
         final subExpandedList = state.subLevelExpandedList[index];
         return Column(
           children: [
@@ -132,8 +132,8 @@ class AssignRoleLeftPage extends StatelessWidget {
               child: _buildRow(
                 context: context,
                 backgroundColor: AppColor.c_F0FAFE,
-                code: screen.screenCode,
-                name: screen.screenName,
+                code: 'screen.screenCode',
+                name: "screen.screenName",
                 padding: 10.0,
                 isExpanded: isExpanded,
                 hasArrow: true,
@@ -148,10 +148,10 @@ class AssignRoleLeftPage extends StatelessWidget {
 
   List<Widget> _buildSubLevels(
       BuildContext context, int index, List<bool> subExpandedList) {
-    final screen = context.read<AssignRolesBloc>().state.screens[index];
+    // final screen = context.read<AssignRolesBloc>().state.screens[index];
     return List.generate(subExpandedList.length, (subIndex) {
       final isSubExpanded = subExpandedList[subIndex];
-      final sub = screen.screenSub;
+      // final sub = screen.screenSub;
       return Column(
         children: [
           GestureDetector(
@@ -161,8 +161,8 @@ class AssignRoleLeftPage extends StatelessWidget {
             child: _buildRow(
               context: context,
               backgroundColor: AppColor.c_FFFFFF,
-              code: sub.subCode,
-              name: sub.subName,
+              code: 'sub.subCode',
+              name: 'sub.subName',
               padding: 20.0,
               isExpanded: isSubExpanded,
               hasArrow: true,
@@ -172,8 +172,8 @@ class AssignRoleLeftPage extends StatelessWidget {
             _buildRow(
               context: context,
               backgroundColor: AppColor.c_FFFFFF,
-              code: sub.subCode,
-              name: sub.subName,
+              code: 'sub.subCode',
+              name: 'sub.subName',
               padding: 30.0,
               isExpanded: false,
               hasArrow: false,

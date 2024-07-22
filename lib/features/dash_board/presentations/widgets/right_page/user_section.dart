@@ -4,6 +4,8 @@ import 'package:hospital_management/core/common/button/remove_button.dart';
 import 'package:hospital_management/core/common/button/square_button.dart';
 import 'package:hospital_management/core/constants/app_color.dart';
 import 'package:hospital_management/core/constants/app_style.dart';
+import 'package:hospital_management/core/model/role_group/account_group.dart';
+import 'package:hospital_management/core/model/role_group/dept_group_role.dart';
 import 'package:hospital_management/features/dash_board/presentations/bloc/dashboard_bloc.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/custom_table_cell.dart';
 import 'package:hospital_management/features/dash_board/presentations/widgets/right_page/right_section.dart';
@@ -26,7 +28,7 @@ class UserSection extends StatelessWidget {
                 children: [
                   _buildTabarItem(
                     backgroundColor: state.curentTableUser == 0
-                        ? Color.fromARGB(255, 241, 253, 255)
+                        ? const Color.fromARGB(255, 241, 253, 255)
                         : AppColor.c_F2F2F2,
                     title: 'Khoa Phòng',
                     onTap: () => context
@@ -36,7 +38,7 @@ class UserSection extends StatelessWidget {
                   const SizedBox(width: 4.0),
                   _buildTabarItem(
                     backgroundColor: state.curentTableUser == 1
-                        ? Color.fromARGB(255, 241, 253, 255)
+                        ? const Color.fromARGB(255, 241, 253, 255)
                         : AppColor.c_F2F2F2,
                     title: 'Tài Khoản',
                     onTap: () => context
@@ -45,8 +47,8 @@ class UserSection extends StatelessWidget {
                   ),
                 ],
               ),
-              _buildHeaderUserSection(state),
-              _buildTableUser(currentTable: state.curentTableUser)
+              _buildHeaderUserSection(state, context),
+              _buildTableUser(state, currentTable: state.curentTableUser)
             ],
           ),
         );
@@ -78,7 +80,24 @@ class UserSection extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderUserSection(DashboardState state) {
+  Widget _buildHeaderUserSection(DashboardState state, BuildContext context) {
+    final isDeptGroup = state.curentTableUser == 0;
+    final selectedValue =
+        isDeptGroup ? state.deptGroupRole : state.accountGroup;
+    final items = isDeptGroup
+        ? state.roleGroup?.deptGroupRoles
+            .map((e) => DropdownMenuItem<DeptGroupRole>(
+                  value: e,
+                  child: Text(e.deptName),
+                ))
+            .toList()
+        : state.roleGroup?.accountGroups
+            .map((e) => DropdownMenuItem<AccountGroup>(
+                  value: e,
+                  child: Text(e.accountName),
+                ))
+            .toList();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 4.0),
       decoration: const BoxDecoration(
@@ -86,10 +105,12 @@ class UserSection extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(state.curentTableUser == 0 ? 'Khoa Phòng' : 'Tài Khoản',
-              style: AppStyle.tabTitle),
+          Text(
+            isDeptGroup ? 'Khoa Phòng' : 'Tài Khoản',
+            style: AppStyle.tabTitle,
+          ),
           const SizedBox(width: 8.0),
-          DropdownButtonFormField(
+          DropdownButtonFormField<dynamic>(
             decoration: InputDecoration(
               constraints:
                   const BoxConstraints(maxWidth: 202.0, maxHeight: 40.0),
@@ -99,23 +120,38 @@ class UserSection extends StatelessWidget {
                     const BorderSide(color: AppColor.c_979797, width: 0.5),
               ),
             ),
-            value: 'HCQT',
-            hint: const Text('Chọn phòng khoa'),
-            items: const [
-              DropdownMenuItem(
-                value: 'HCQT',
-                child: Text('Hành chính quản trị'),
-              ),
-              DropdownMenuItem(
-                value: 'HCTT',
-                child: Text('Hành chính quản trị'),
-              ),
-            ],
-            onChanged: (value) {},
+            hint: Text(isDeptGroup ? 'Chọn phòng khoa' : 'Chọn Tài khoản'),
+            value: selectedValue,
+            items: items,
+            onChanged: (value) {
+              if (isDeptGroup) {
+                if (value is DeptGroupRole) {
+                  context.read<DashboardBloc>().add(
+                        DashboardEvent.selectDeptGroupRole(value),
+                      );
+                }
+              } else {
+                if (value is AccountGroup) {
+                  context.read<DashboardBloc>().add(
+                        DashboardEvent.selectAccountGroup(value),
+                      );
+                }
+              }
+            },
           ),
           const SizedBox(width: 15.0),
           AppSquareButton(
             iconPath: Assets.icons.dropIcon,
+            onTap: () {
+              if (isDeptGroup) {
+                context.read<DashboardBloc>().add(
+                    DashboardEvent.addDeptGroupRoleToList(
+                        state.deptGroupRole!));
+              } else {
+                context.read<DashboardBloc>().add(
+                    DashboardEvent.addAccountGroupToList(state.accountGroup!));
+              }
+            },
           ),
           const SizedBox(width: 7.0),
           const RemoveButton(),
@@ -124,7 +160,12 @@ class UserSection extends StatelessWidget {
     );
   }
 
-  Widget _buildTableUser({required int currentTable}) {
+  Widget _buildTableUser(DashboardState state, {required int currentTable}) {
+    bool isDept = (currentTable == 0);
+
+    // Choose the appropriate list based on the value of currentTable
+    var dataList = isDept ? state.deptGroupRoles : state.accountGroups;
+
     return Table(
       border: const TableBorder(
         borderRadius: BorderRadius.vertical(
@@ -139,7 +180,16 @@ class UserSection extends StatelessWidget {
       },
       children: [
         _buildHeaderTableUser(current: currentTable),
-        _buildRowTableUser(),
+        for (var data in dataList)
+          _buildRowTableUser(
+            current: currentTable,
+            code: isDept
+                ? (data as DeptGroupRole).deptCode
+                : (data as AccountGroup).accountCode,
+            name: isDept
+                ? (data as DeptGroupRole).deptName
+                : (data as AccountGroup).accountName,
+          ),
       ],
     );
   }
@@ -163,16 +213,17 @@ class UserSection extends StatelessWidget {
     );
   }
 
-  TableRow _buildRowTableUser() {
+  TableRow _buildRowTableUser(
+      {required int current, required String code, required String name}) {
     return TableRow(
       decoration: const BoxDecoration(
         color: AppColor.c_FFFFFF,
       ),
       children: [
         Checkbox(value: true, onChanged: (value) {}),
-        const CustomTableCell(text: 'HCQT'),
-        const CustomTableCell(
-          text: 'Hành chính quản trị',
+        CustomTableCell(text: code),
+        CustomTableCell(
+          text: name,
         ),
         _buildDeleteButton(),
       ],

@@ -41,20 +41,18 @@ class _RoleGroupInformationSectionState
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
-        // Cập nhật giá trị của các controller nếu có dữ liệu từ state
-        if (state.roleGroupSimple != null) {
-          _codeController.text = state.roleGroupSimple!.roleGroupCode;
-          _nameController.text = state.roleGroupSimple!.roleGroupName;
-          _descriptionController.text = state.roleGroupSimple!.description;
+        if (state.roleGroup != null) {
+          _codeController.text = state.roleGroup!.roleCode;
+          _nameController.text = state.roleGroup!.roleName;
+          _descriptionController.text = state.roleGroup!.description;
         }
-
         return RightSection(
           padding: const EdgeInsets.all(8.0),
           sectionOnPressedSave: () {},
           title: '1. THÔNG TIN NHÓM QUYỀN',
           child: Column(children: [
             _buildCodeRoleItem(
-              isUsed: state.roleGroupSimple?.status ?? 1,
+              isUsed: state.roleGroup?.isUse ?? 1,
               controller: _codeController,
             ),
             const SizedBox(
