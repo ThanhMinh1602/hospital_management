@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hospital_management/core/common/button/app_button.dart';
@@ -36,7 +34,7 @@ class AssignRoleRightPage extends StatelessWidget {
                   saveOnPressed: () {},
                 ),
                 _buildTableHeader(),
-                _buildTableBody()
+                _buildTableBody(context),
               ],
             ),
           )),
@@ -114,36 +112,43 @@ class AssignRoleRightPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTableBody() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        const isExpanded = true;
-        // final screen = state.screens[index];
-        // final subExpandedList = state.subLevelExpandedList[index];
-        return Column(
-          children: [
-            GestureDetector(
-              onTap: () {},
-              child: _buildRow(
-                context: context,
-                backgroundColor: AppColor.c_F0FAFE,
-                code: 'Admin',
-                name: 'Quản trị hệ thống',
-                role: 'Toàn quyền',
-                padding: 10.0,
-                isExpanded: isExpanded,
-                hasArrow: true,
-              ),
-            ),
-            if (isExpanded) ...[
-              _buildActionRow('Xem', padding: 30.0),
-              _buildActionRow('Thêm', padding: 30.0),
-              _buildActionRow('Xoá', padding: 30.0),
-            ]
-          ],
+  Widget _buildTableBody(BuildContext context) {
+    return BlocBuilder<AssignRolesBloc, AssignRolesState>(
+      builder: (context, state) {
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 5, // Thay đổi theo số lượng phần tử bạn có
+          itemBuilder: (context, index) {
+            final isExpanded = state.rightIsExpandedList[index];
+
+            return Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    context
+                        .read<AssignRolesBloc>()
+                        .add(AssignRolesEvent.toggleRightExpand(index));
+                  },
+                  child: _buildRow(
+                    context: context,
+                    backgroundColor: AppColor.c_F0FAFE,
+                    code: 'Admin', // Cập nhật giá trị thực tế
+                    name: 'Quản trị hệ thống', // Cập nhật giá trị thực tế
+                    role: 'Toàn quyền', // Cập nhật giá trị thực tế
+                    padding: 10.0,
+                    isExpanded: isExpanded,
+                    hasArrow: true,
+                  ),
+                ),
+                if (isExpanded) ...[
+                  _buildActionRow('Xem', padding: 30.0),
+                  _buildActionRow('Thêm', padding: 30.0),
+                  _buildActionRow('Xoá', padding: 30.0),
+                ]
+              ],
+            );
+          },
         );
       },
     );

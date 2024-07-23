@@ -6,4 +6,6 @@ class AssignRolesEvent with _$AssignRolesEvent {
   const factory AssignRolesEvent.toggleExpand(int index) = ToggleExpandEvent;
   const factory AssignRolesEvent.toggleSubExpand(int index, int subIndex) =
       ToggleSubExpandEvent;
+  const factory AssignRolesEvent.toggleRightExpand(int index) =
+      ToggleRightExpandEvent;
 }

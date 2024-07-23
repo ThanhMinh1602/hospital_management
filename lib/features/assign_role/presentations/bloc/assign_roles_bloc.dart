@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hospital_management/core/model/role_group/role_group.dart';
+import 'package:hospital_management/core/model/role_group/screen.dart';
 
 part 'assign_roles_event.dart';
 part 'assign_roles_state.dart';
@@ -10,16 +12,28 @@ class AssignRolesBloc extends Bloc<AssignRolesEvent, AssignRolesState> {
     on(onInit);
     on(onToggleExpand);
     on(onToggleSubExpand);
+    on(onToggleRightExpand);
     add(const AssignRolesEvent.initial());
   }
-  Future<void> onInit(
+  void onInit(
       AssignRolesInitialEvent event, Emitter<AssignRolesState> emitter) async {
-    final screens = [];
+    final screens = RoleGroup.generateDatas[1].screens;
+
     emitter(state.copyWith(
-      // screens: screens,
+      screens: screens,
       isExpandedList: List.generate(screens.length, (_) => false),
       subLevelExpandedList: List.generate(screens.length, (_) => [false]),
+      rightIsExpandedList: List.generate(
+          5, (_) => false), // Thay đổi theo số lượng phần tử bạn có
     ));
+  }
+
+  void onToggleRightExpand(
+      ToggleRightExpandEvent event, Emitter<AssignRolesState> emitter) {
+    final index = event.index;
+    List<bool> newRightIsExpandedList = List.from(state.rightIsExpandedList);
+    newRightIsExpandedList[index] = !newRightIsExpandedList[index];
+    emitter(state.copyWith(rightIsExpandedList: newRightIsExpandedList));
   }
 
   void onToggleExpand(

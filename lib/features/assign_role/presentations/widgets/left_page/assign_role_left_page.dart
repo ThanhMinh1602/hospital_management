@@ -20,6 +20,7 @@ class AssignRoleLeftPage extends StatelessWidget {
           flex: 2,
           child: Container(
             width: double.infinity,
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               color: AppColor.c_F8FAFC,
               borderRadius: BorderRadius.circular(8.0),
@@ -116,10 +117,9 @@ class AssignRoleLeftPage extends StatelessWidget {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 10,
+      itemCount: state.screens.length,
       itemBuilder: (context, index) {
         final isExpanded = state.isExpandedList[index];
-        final screen = [];
         final subExpandedList = state.subLevelExpandedList[index];
         return Column(
           children: [
@@ -132,8 +132,8 @@ class AssignRoleLeftPage extends StatelessWidget {
               child: _buildRow(
                 context: context,
                 backgroundColor: AppColor.c_F0FAFE,
-                code: 'screen.screenCode',
-                name: "screen.screenName",
+                code: state.screens[index].screenCode,
+                name: state.screens[index].screenCode,
                 padding: 10.0,
                 isExpanded: isExpanded,
                 hasArrow: true,
@@ -148,10 +148,10 @@ class AssignRoleLeftPage extends StatelessWidget {
 
   List<Widget> _buildSubLevels(
       BuildContext context, int index, List<bool> subExpandedList) {
-    // final screen = context.read<AssignRolesBloc>().state.screens[index];
+    final screen = context.read<AssignRolesBloc>().state.screens[index];
     return List.generate(subExpandedList.length, (subIndex) {
       final isSubExpanded = subExpandedList[subIndex];
-      // final sub = screen.screenSub;
+      final sub = screen.screenSub;
       return Column(
         children: [
           GestureDetector(
@@ -161,8 +161,8 @@ class AssignRoleLeftPage extends StatelessWidget {
             child: _buildRow(
               context: context,
               backgroundColor: AppColor.c_FFFFFF,
-              code: 'sub.subCode',
-              name: 'sub.subName',
+              code: sub!.screenCode,
+              name: sub.screenName,
               padding: 20.0,
               isExpanded: isSubExpanded,
               hasArrow: true,
@@ -172,8 +172,8 @@ class AssignRoleLeftPage extends StatelessWidget {
             _buildRow(
               context: context,
               backgroundColor: AppColor.c_FFFFFF,
-              code: 'sub.subCode',
-              name: 'sub.subName',
+              code: sub.screenCode,
+              name: sub.screenName,
               padding: 30.0,
               isExpanded: false,
               hasArrow: false,

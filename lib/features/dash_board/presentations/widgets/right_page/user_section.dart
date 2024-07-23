@@ -48,7 +48,8 @@ class UserSection extends StatelessWidget {
                 ],
               ),
               _buildHeaderUserSection(state, context),
-              _buildTableUser(state, currentTable: state.curentTableUser)
+              _buildTableUser(context, state,
+                  currentTable: state.curentTableUser)
             ],
           ),
         );
@@ -154,13 +155,16 @@ class UserSection extends StatelessWidget {
             },
           ),
           const SizedBox(width: 7.0),
-          const RemoveButton(),
+          RemoveButton(
+            onTap: () {},
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildTableUser(DashboardState state, {required int currentTable}) {
+  Widget _buildTableUser(BuildContext context, DashboardState state,
+      {required int currentTable}) {
     bool isDept = (currentTable == 0);
 
     // Choose the appropriate list based on the value of currentTable
@@ -182,7 +186,9 @@ class UserSection extends StatelessWidget {
         _buildHeaderTableUser(current: currentTable),
         for (var data in dataList)
           _buildRowTableUser(
+            context,
             current: currentTable,
+            id: isDept ? (data as DeptGroupRole).id : (data as AccountGroup).id,
             code: isDept
                 ? (data as DeptGroupRole).deptCode
                 : (data as AccountGroup).accountCode,
@@ -213,8 +219,11 @@ class UserSection extends StatelessWidget {
     );
   }
 
-  TableRow _buildRowTableUser(
-      {required int current, required String code, required String name}) {
+  TableRow _buildRowTableUser(BuildContext context,
+      {required int current,
+      required String code,
+      required String name,
+      required int id}) {
     return TableRow(
       decoration: const BoxDecoration(
         color: AppColor.c_FFFFFF,
@@ -225,15 +234,30 @@ class UserSection extends StatelessWidget {
         CustomTableCell(
           text: name,
         ),
-        _buildDeleteButton(),
+        _buildDeleteButton(
+          onTap: () {
+            if (current == 0) {
+              context.read<DashboardBloc>().add(
+                    DashboardEvent.unSelectDept(id),
+                  );
+            } else {
+              context.read<DashboardBloc>().add(
+                    DashboardEvent.unSelectAccount(id),
+                  );
+            }
+          },
+        ),
       ],
     );
   }
 
-  Widget _buildDeleteButton() {
-    return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child:
-            Center(child: AppSquareButton(iconPath: Assets.icons.deleteIcon)));
+  Widget _buildDeleteButton({void Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Center(
+              child: AppSquareButton(iconPath: Assets.icons.deleteIcon))),
+    );
   }
 }

@@ -36,4 +36,7 @@ class DashboardEvent with _$DashboardEvent {
       DeptGroupRole deptGroupRole) = AddDeptGroupRoleToListEvent;
   const factory DashboardEvent.addAccountGroupToList(
       AccountGroup accountGroup) = AddAccountGroupToListEvent;
+
+  const factory DashboardEvent.unSelectAccount(int id) = UnSelectAccountEvent;
+  const factory DashboardEvent.unSelectDept(int id) = UnSelectDeptEvent;
 }

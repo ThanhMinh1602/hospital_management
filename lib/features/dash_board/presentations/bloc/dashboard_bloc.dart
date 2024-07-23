@@ -26,6 +26,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on(onSelectAccountGroup);
     on(onAddAccountGroupToList);
     on(onAddDeptGroupRoleToList);
+    on(onUnselectAccount);
+    on(onUnselectDept);
     add(const DashboardEvent.init());
   }
 
@@ -132,13 +134,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     emittter(state.copyWith(deptGroupRole: event.deptGroupRole));
   }
 
-  void onAddDeptGroupRoleToList(
-      AddDeptGroupRoleToListEvent event, Emitter<DashboardState> emitter) {
-    final List<DeptGroupRole> updatedDeptGroupRoles =
-        List.from(state.deptGroupRoles)..add(event.deptGroupRole);
-    emitter(state.copyWith(deptGroupRoles: updatedDeptGroupRoles));
-  }
-
   void onSelectAccountGroup(
       SelectAccountGroupEvent event, Emitter<DashboardState> emittter) {
     emittter(state.copyWith(accountGroup: event.accountGroup));
@@ -148,7 +143,37 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       AddAccountGroupToListEvent event, Emitter<DashboardState> emitter) {
     final List<AccountGroup> updatedAccountGroups =
         List.from(state.accountGroups)..add(event.accountGroup);
+    final List<AccountGroup> reversedAccountGroups =
+        updatedAccountGroups.reversed.toList();
+    emitter(state.copyWith(accountGroups: reversedAccountGroups));
+  }
+
+  void onUnselectAccount(
+      UnSelectAccountEvent event, Emitter<DashboardState> emitter) {
+    final id = event.id;
+    final List<AccountGroup> updatedAccountGroups =
+        List.from(state.accountGroups)
+          ..removeWhere((accountGroup) => accountGroup.id == id);
 
     emitter(state.copyWith(accountGroups: updatedAccountGroups));
+  }
+
+  void onAddDeptGroupRoleToList(
+      AddDeptGroupRoleToListEvent event, Emitter<DashboardState> emitter) {
+    final List<DeptGroupRole> updatedDeptGroupRoles =
+        List.from(state.deptGroupRoles)..add(event.deptGroupRole);
+    final List<DeptGroupRole> reversedDeptGroupRole =
+        updatedDeptGroupRoles.reversed.toList();
+    emitter(state.copyWith(deptGroupRoles: reversedDeptGroupRole));
+  }
+
+  void onUnselectDept(
+      UnSelectDeptEvent event, Emitter<DashboardState> emitter) {
+    final id = event.id;
+    final List<DeptGroupRole> updatedDeptGroupRoles =
+        List.from(state.deptGroupRoles)
+          ..removeWhere((deptGroupRole) => deptGroupRole.id == id);
+
+    emitter(state.copyWith(deptGroupRoles: updatedDeptGroupRoles));
   }
 }
